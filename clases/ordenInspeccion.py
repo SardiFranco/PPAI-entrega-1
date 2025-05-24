@@ -26,6 +26,6 @@ class OrdenInspeccion:
     def setEstado(self, estado):
         self.estado.nombreEstado = estado.nombreEstado
     
-    def cerrar(self):
+    def cerrar (self):
         self.setFechaHoraCierre(datetime.now())
         self.setEstado(Estado.paraOrdenInspeccion("Cerrada"))

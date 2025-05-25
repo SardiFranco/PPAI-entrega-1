@@ -1,0 +1,49 @@
+from clases.estado import Estado
+from clases.cambioEstado import CambioEstado
+from clases.estacionSismologica import EstacionSismologica
+from datetime import datetime
+
+class Sismografo:
+    # Constantes de clase
+    listaSismografos = []
+
+    # Constructor
+    def __init__(self, fechaAdquisicion, nroSerie: int, idSismografo: int, estado: Estado, cambiosEstado: list, estacionSismologica: EstacionSismologica):
+        self.fechaAdquisicion = fechaAdquisicion
+        self.nroSerie = nroSerie
+        self.idSismografo = idSismografo
+        self.estado = estado
+        self.estado.ambito = "Sismografo"
+        self.cambiosEstado = cambiosEstado
+        self.estacionSismologica = estacionSismologica
+        Sismografo.listaSismografos.append(self)
+    
+    @classmethod
+    def listaSismografos(cls):
+        return cls.listaSismografos
+
+    # Metodos de instancia
+    def crearCambioEstado(self):
+        newCambio = CambioEstado(datetime.now(), None, self.estado)
+        self.cambiosEstado.append(newCambio) 
+        return newCambio
+
+    def obtenerEstadoActual(self):
+        for cambio in self.cambiosEstado: 
+            if cambio.esEstadoActual():
+                return cambio
+        return None
+
+    def setEstadoActual(self, estado):
+        self.estado = estado
+
+    def getIdSismografo(self):
+        return self.idSismografo
+    
+    def sosDeEstacionSismologica(self, nombreEstacion):
+        if self.estacionSismologica.nombre ==  nombreEstacion:
+            return self
+    
+    def enviarAReparar(self):
+        self.obtenerEstadoActual().setFechaHoraFin(datetime.now())
+        self.crearCambioEstado()

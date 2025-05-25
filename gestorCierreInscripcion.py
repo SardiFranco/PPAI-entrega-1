@@ -1,4 +1,4 @@
-from interfaces.PantallaCierreInscripcion import PantallaCierreInscripcion
+import PantallaCierreInscripcion as PantallaCierreInscripcion
 
 class GestorCierreInscripcion:
     def __init__(self, ordenes, motivos, comentario, fechaHoraActual, mail):

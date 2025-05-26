@@ -5,6 +5,8 @@ if __name__ == "__main__":
     from clases.estado import Estado
     from clases.ordenInspeccion import OrdenInspeccion
     from datetime import datetime
+    from clases.empleado import Empleado
+    from clases.usuario import Usuario
 
     # Instancias de Estado
     estado_pendiente = Estado.paraOrdenInspeccion("Pendiente")
@@ -45,6 +47,22 @@ if __name__ == "__main__":
             estado=estado_completa
         ),
     ]
+
+    # Crear un empleado predefinido
+    empleado_test = Empleado(
+        nombre="Juan",
+        apellido="Pérez",
+        telefono=123456789,
+        mail="juan.perez@email.com",
+        rol="ResponsableInspección"
+    )
+
+    # Crear un usuario predefinido asociado al empleado
+    usuario_test = Usuario(
+        nombreusuario="juanp",
+        contrasena="1234",
+        empleado=empleado_test
+    )
 
     # Imprime las órdenes para verificar
     for orden in ordenes_test:

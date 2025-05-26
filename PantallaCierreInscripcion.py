@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import gestorCierreInscripcion as gestorCierreInscripcion
+import clases.usuario as Usuario
 
 class PantallaCierreInscripcion:
 
-    def _init_(self, listaOrdenes=None, listaMotivos=None, botonCerrarInspeccion=None, botonConfirmacionCierreOrden=None, seleccionOrden=None, campoObservacion=None):
-
+    def __init__(self, listaOrdenes=None, listaMotivos=None, botonCerrarInspeccion=None, 
+                 botonConfirmacionCierreOrden=None, seleccionOrden=None, campoObservacion=None):
+        
         self.listaOrdenes = listaOrdenes
         self.listaMotivos = listaMotivos
         self.botonCerrarInspeccion = botonCerrarInspeccion
@@ -18,18 +19,17 @@ class PantallaCierreInscripcion:
         self.ventana.title("Pantalla de Cierre de Inscripción")
         self.ventana.geometry("1200x600")
 
-        # Mostrar solo el botón de cerrar inscripción primero
+        # Botón para cerrar inscripción
         self.botonCerrarInspeccion = ttk.Button(self.ventana, text="Cerrar Inscripción", command=self.mostrarListaOrdenes)
         self.botonCerrarInspeccion.pack(pady=10)
 
-        # Iniciar loop de ventana
         self.ventana.mainloop()
 
+
+    # Métodos de pantalla
     def mostrarListaOrdenes(self):
-        # Deshabilitar el botón luego de presionarlo
         self.botonCerrarInspeccion.config(state=tk.DISABLED)
 
-        # Crear y mostrar Treeview
         columnas = ("Nro Orden", "ID Sismógrafo", "Estado", "Fecha Inicio", "Fecha Finalización", "Fecha Cierre")
         self.listaOrdenes = ttk.Treeview(self.ventana, columns=columnas, show='headings')
         for col in columnas:
@@ -44,5 +44,7 @@ class PantallaCierreInscripcion:
     def habilitarVentana(self):
         self.botonCerrarInspeccion.config(state=tk.NORMAL)
 
-# Crear instancia para mostrar la ventana
-PantallaCierreInscripcion()
+
+if __name__ == "__main__":
+
+    PantallaCierreInscripcion()

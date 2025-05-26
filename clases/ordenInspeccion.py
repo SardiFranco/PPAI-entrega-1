@@ -5,6 +5,8 @@ import clases.empleado as Empleado
 
 # Orden de Inspección
 class OrdenInspeccion:
+    listaOrdenesInspeccion = []
+
     def __init__(self, nroOrden: int, fechaHoraCierre, fechaHoraInicio, fechaHoraFinalizacion, observacion: str, estado: Estado, estacionSismologica: EstacionSismologica, empleado: Empleado):
         self.nroOrden = nroOrden
         self.fechaHoraCierre = fechaHoraCierre
@@ -15,6 +17,7 @@ class OrdenInspeccion:
         self.estado.ambito = "OrdenInspección"
         self.estacionSismologica = estacionSismologica
         self.empleado = empleado
+        OrdenInspeccion.listaOrdenesInspeccion.append(self)
 
     def setFechaHoraCierre(self, fechaHoraCierre): 
         self.fechaHoraCierre = fechaHoraCierre
@@ -34,3 +37,6 @@ class OrdenInspeccion:
                f"Estado: {self.estado.nombreEstado}, " \
                f"Fecha Inicio: {self.fechaHoraInicio}, Fecha Finalización: {self.fechaHoraFinalizacion}, " \
                f"Fecha Cierre: {self.fechaHoraCierre}"
+    
+    def esDeEmpleado(self, empleado: Empleado):
+        return self.empleado == empleado

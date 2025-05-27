@@ -5,7 +5,7 @@ from datetime import datetime
 
 class Sismografo:
     # Constantes de clase
-    listaSismografos = []
+    lista_Sismografos = []
 
     # Constructor
     def __init__(self, fechaAdquisicion, nroSerie: int, idSismografo: int, estado: Estado, cambiosEstado: list, estacionSismologica: EstacionSismologica):
@@ -16,11 +16,11 @@ class Sismografo:
         self.estado.ambito = "Sismografo"
         self.cambiosEstado = cambiosEstado
         self.estacionSismologica = estacionSismologica
-        Sismografo.listaSismografos.append(self)
+        Sismografo.lista_Sismografos.append(self)
     
     @classmethod
     def listaSismografos(cls):
-        return cls.listaSismografos
+        return cls.lista_Sismografos
 
     # Metodos de instancia
     def crearCambioEstado(self):

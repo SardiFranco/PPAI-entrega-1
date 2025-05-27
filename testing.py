@@ -4,14 +4,40 @@ if __name__ == "__main__":
     # Importa la clase Estado correctamente
     from clases.estado import Estado
     from clases.ordenInspeccion import OrdenInspeccion
-    from datetime import datetime
     from clases.empleado import Empleado
     from clases.usuario import Usuario
+    from clases.sismografo import Sismografo
+    from clases.estacionSismologica import EstacionSismologica
+    from PantallaCierreInscripcion import PantallaCierreInscripcion
+    from gestorCierreInscripcion import GestorCierreInscripcion
+    from datetime import datetime
 
     # Instancias de Estado
     estado_pendiente = Estado.paraOrdenInspeccion("Pendiente")
     estado_completa = Estado.paraOrdenInspeccion("CompletamenteRealizada")
 
+    # Estaciones de prueba
+    estacion1 = EstacionSismologica(102, -34.6, -58.4, "Estación Central")
+    estacion2 = EstacionSismologica(35, -34.7, -58.5, "Estación Norte")
+    estacion3 = EstacionSismologica(2434, -34.8, -58.6, "Estación Sur")
+    estacion4 = EstacionSismologica(1000, -34.9, -58.7, "Estación Oeste")
+    estacion5 = EstacionSismologica(5000, -35.0, -58.8, "Estación Este")
+
+    # Sismografos
+    sismografo1 = Sismografo(datetime(2025, 1, 1), 12345, 65, estado_pendiente, [], estacion1)
+    sismografo2 = Sismografo(datetime(2025, 1, 2), 67890, 24, estado_completa, [], estacion2)
+    sismografo3 = Sismografo(datetime(2025, 1, 3), 54321, 122, estado_pendiente, [], estacion3)
+    sismografo4 = Sismografo(datetime(2025, 1, 4), 98765, 6, estado_completa, [], estacion4)
+    sismografo5 = Sismografo(datetime(2025, 1, 5), 11223, 99, estado_pendiente, [], estacion5)
+
+    # Crea empleado predefinido
+    empleado_logueado = Empleado(
+        nombre="Juan",
+        apellido="Pérez",
+        telefono=123456789,
+        mail="juan.perez@email.com",
+        rol="ResponsableInspección"
+    )
     # Lista de órdenes de inspección para testeo
     ordenes_test = [
         OrdenInspeccion(
@@ -20,7 +46,14 @@ if __name__ == "__main__":
             fechaHoraInicio=datetime(2025, 5, 1, 9, 0),
             fechaHoraFinalizacion=None,
             observacion=None,
-            estado=estado_pendiente
+            estado=estado_pendiente,
+            estacionSismologica=estacion1,
+            empleado=Empleado(
+                nombre="Ana",
+                apellido="Gómez",
+                telefono=987654321,
+                mail="ana.gomez@gmail.com",
+                rol="ResponsableInspección") 
         ),
         OrdenInspeccion(
             nroOrden=2,
@@ -28,7 +61,9 @@ if __name__ == "__main__":
             fechaHoraInicio=datetime(2025, 5, 2, 10, 0),
             fechaHoraFinalizacion=datetime(2025, 5, 2, 12, 0),
             observacion=None,
-            estado=estado_completa
+            estado=estado_completa,
+            estacionSismologica=estacion2,
+            empleado=empleado_logueado
         ),
         OrdenInspeccion(
             nroOrden=3,
@@ -36,7 +71,14 @@ if __name__ == "__main__":
             fechaHoraInicio=datetime(2025, 5, 3, 8, 30),
             fechaHoraFinalizacion=None,
             observacion=None,
-            estado=estado_pendiente
+            estado=estado_pendiente,
+            estacionSismologica=estacion3,
+            empleado=Empleado(
+                nombre="Ana",
+                apellido="Gómez",
+                telefono=987654321,
+                mail="ana.gomez@gmail.com",
+                rol="ResponsableInspección") 
         ),
         OrdenInspeccion(
             nroOrden=4,
@@ -44,28 +86,30 @@ if __name__ == "__main__":
             fechaHoraInicio=datetime(2025, 5, 4, 14, 0),
             fechaHoraFinalizacion=datetime(2025, 5, 4, 16, 0),
             observacion=None,
-            estado=estado_completa
+            estado=estado_completa,
+            estacionSismologica=estacion4,
+            empleado=empleado_logueado
+        ),
+        OrdenInspeccion(
+            nroOrden=25,
+            fechaHoraCierre=None,
+            fechaHoraInicio=datetime(2025, 5, 4, 14, 0),
+            fechaHoraFinalizacion=datetime(2023, 5, 7, 13, 30),
+            observacion=None,
+            estado=estado_pendiente,
+            estacionSismologica=estacion5,
+            empleado=empleado_logueado
         ),
     ]
-
-    # Crear un empleado predefinido
-    empleado_test = Empleado(
-        nombre="Juan",
-        apellido="Pérez",
-        telefono=123456789,
-        mail="juan.perez@email.com",
-        rol="ResponsableInspección"
-    )
 
     # Crear un usuario predefinido asociado al empleado
     usuario_test = Usuario(
         nombreusuario="juanp",
         contrasena="1234",
-        empleado=empleado_test
+        empleado=empleado_logueado
     )
 
+    gestor = GestorCierreInscripcion(usuario_test, None, None, None, None, None)
+    pantalla = PantallaCierreInscripcion(gestor=gestor)
     # Imprime las órdenes para verificar
-    for orden in ordenes_test:
-        print(f"Nro: {orden.nroOrden}, Estado: {orden.estado.nombreEstado}, "
-              f"Inicio: {orden.fechaHoraInicio}, Finalización: {orden.fechaHoraFinalizacion}, "
-              f"Cierre: {orden.fechaHoraCierre}, Observación: {orden.observacion}")
+    PantallaCierreInscripcion()

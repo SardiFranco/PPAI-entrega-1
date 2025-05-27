@@ -8,8 +8,8 @@ if __name__ == "__main__":
     from clases.usuario import Usuario
     from clases.sismografo import Sismografo
     from clases.estacionSismologica import EstacionSismologica
-    from PantallaCierreInscripcion import PantallaCierreInscripcion
-    from gestorCierreInscripcion import GestorCierreInscripcion
+    from pantallaCierreInspeccion import PantallaCierreInspeccion
+    from gestorCierreInspeccion import GestorCierreInspeccion
     from datetime import datetime
 
     # Instancias de Estado
@@ -109,7 +109,5 @@ if __name__ == "__main__":
         empleado=empleado_logueado
     )
 
-    gestor = GestorCierreInscripcion(usuario_test, None, None, None, None, None)
-    pantalla = PantallaCierreInscripcion(gestor=gestor)
-    # Imprime las órdenes para verificar
-    PantallaCierreInscripcion()
+    gestor = GestorCierreInspeccion(usuario_test, None, None, None, None, None)
+    pantalla = PantallaCierreInspeccion(gestor=gestor)

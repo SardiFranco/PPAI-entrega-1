@@ -1,15 +1,16 @@
-import PantallaCierreInscripcion as PantallaCierreInscripcion
+
 from clases.usuario import Usuario
 from clases.ordenInspeccion import OrdenInspeccion
 
-class GestorCierreInscripcion:
-    def __init__(self, usuario: Usuario, ordenes: list, motivos, comentario, fechaHoraActual, mail):
+class GestorCierreInspeccion:
+    def __init__(self, usuario: Usuario, ordenes: list, motivos, comentario, fechaHoraActual, mail, ordenSeleccionada=None):
         self.usuario = usuario
         self.ordenes = OrdenInspeccion.listaOrdenesInspeccion
         self.motivos = motivos
         self.comentario = comentario
         self.fechaHoraActual = fechaHoraActual
         self.mail = mail
+        self.ordenSeleccionada = ordenSeleccionada
 
     def buscarRILogueado(self):
         responsable = self.usuario.getRLlogueado()

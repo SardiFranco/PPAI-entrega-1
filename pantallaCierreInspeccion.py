@@ -70,12 +70,103 @@ class PantallaCierreInspeccion:
             nro_orden = valores[0]
             for orden in self.gestor.ordenes:
                 if orden.nroOrden == int(nro_orden):
-                    self.ordenSeleccionada = orden
+                    self.gestor.ordenSeleccionada = orden
+                    self.gestor.tomarSeleccionOrden(orden)
+
                     self.botonSelecOrden.pack_forget()  # Ocultar el botón de selección de orden
                     self.listaOrdenes.pack_forget()  # Ocultar la lista de órdenes
                     print(f"Orden seleccionada: {orden.mostrarDatosDeOrden()}")
-                    messagebox.showinfo("Orden Seleccionada", f"Has seleccionado la Orden Nro: {nro_orden}")
-                    break
+
+                    self.pedirObservacion()
         else:
             messagebox.showwarning("Sin selección", "Por favor, selecciona una orden de la tabla.")
     
+    def pedirObservacion(self):
+        label_observacion = ttk.Label(self.ventana, text="Ingrese una observación para el cierre:")
+        label_observacion.pack(pady=10)
+
+        self.campoObservacion = tk.Text(self.ventana, height=5, width=80)
+        self.campoObservacion.pack(pady=10)
+
+        botonConfObservacion = ttk.Button(self.ventana, text="Confirmar Observación", command=lambda: self.tomarObservacion(botonConfObservacion))
+        botonConfObservacion.pack(pady=10)
+
+    def tomarObservacion(self,botonConfObservacion, event=None):
+        observacion = self.campoObservacion.get("1.0", tk.END).strip()
+        if not observacion:
+            messagebox.showwarning("Observación Vacía", "Por favor ingrese una observación antes de continuar.")
+            return
+        self.gestor.observacion = observacion
+        print(f"Observación ingresada: {self.gestor.observacion}")
+        self.campoObservacion.pack_forget()
+        botonConfObservacion.pack_forget()
+        self.mostrarMotivosFueraDeServicioASelec()
+
+    def mostrarMotivosFueraDeServicioASelec(self, event=None):
+        # Limpiar cualquier motivo previo
+        if hasattr(self, 'ListaMotivos'):
+            self.ListaMotivos.destroy()
+       
+        self.ListaMotivos = ttk.Frame(self.ventana)
+        self.ListaMotivos.pack(pady=10)
+       
+        label_motivos = ttk.Label(self.ListaMotivos, text="Seleccione los motivos para poner el sismógrafo fuera de servicio:")
+        label_motivos.pack(pady=5)
+
+        # Crear un diccionario para almacenar las variables de los checkboxes
+        self.check_vars = {}
+        self.comentarios = {}
+        # Iterar sobre la lista de motivos y crear un checkbox para cada uno
+        for motivo in self.gestor.buscarMotivos():
+            var = tk.BooleanVar()
+            self.check_vars[motivo] = var
+
+            frame_motivo = ttk.Frame(self.ListaMotivos)
+            frame_motivo.pack(anchor='w', padx=10, pady=5, fill='x')
+
+            # Crear un campo de texto para el comentario del motivo
+            entry = ttk.Entry(frame_motivo, width=50)
+            self.comentarios[motivo] = entry
+
+            check = ttk.Checkbutton(frame_motivo, text=motivo, variable=var, command=lambda v=var, e=entry: self.solicitarComentarioMotivo(v, e))
+            check.pack(anchor='w', padx=10)
+    
+    def solicitarComentarioMotivo(self, v, e):
+                if v.get():
+                    e.pack(pady=5)
+                    print("ok")
+                else:
+                    e.delete(0, tk.END)  # Limpiar el campo de texto
+                    e.pack_forget()
+
+    def confirmarCierreOrden(self):
+        observacion = self.campoObservacion.get("1.0", tk.END).strip()
+        if not observacion:
+            messagebox.showwarning("Observación Vacía", "Por favor ingrese una observación antes de confirmar.")
+            return
+
+        estado = self.estadoSismografo.get()
+        motivos_seleccionados = []
+        comentarios_motivos = {}
+
+        if estado == "Fuera de servicio":
+            for motivo, var in self.check_vars.items():
+                if var.get():
+                    comentario = self.comentarios[motivo].get().strip()
+                    if not comentario:
+                        messagebox.showwarning("Comentario Faltante", f"Por favor ingrese un comentario para el motivo '{motivo}'.")
+                        return
+                    motivos_seleccionados.append(motivo)
+                    comentarios_motivos[motivo] = comentario
+
+            if not motivos_seleccionados:
+                messagebox.showwarning("Motivos Faltantes", "Por favor seleccione al menos un motivo para poner el sismógrafo fuera de servicio.")
+                return
+
+        # Aquí llamarías al gestor para registrar el cierre
+        print("Observación:", observacion)
+        print("Estado:", estado)
+        print("Motivos seleccionados:", motivos_seleccionados)
+        print("Comentarios por motivo:", comentarios_motivos)
+
+        messagebox.showinfo("Cierre Confirmado", "La orden de inspección ha sido cerrada exitosamente.")

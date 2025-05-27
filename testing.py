@@ -1,11 +1,12 @@
 # ...existing code...
 
 if __name__ == "__main__":
-    # Importa la clase Estado correctamente
+    # Importa las clases
     from clases.estado import Estado
     from clases.ordenInspeccion import OrdenInspeccion
     from clases.empleado import Empleado
     from clases.usuario import Usuario
+    from clases.motivoTipo import MotivoTipo
     from clases.sismografo import Sismografo
     from clases.estacionSismologica import EstacionSismologica
     from pantallaCierreInspeccion import PantallaCierreInspeccion
@@ -15,6 +16,8 @@ if __name__ == "__main__":
     # Instancias de Estado
     estado_pendiente = Estado.paraOrdenInspeccion("Pendiente")
     estado_completa = Estado.paraOrdenInspeccion("CompletamenteRealizada")
+    estado_FueraServicio = Estado.paraSismografo("Fuera de Servicio")
+    estado_Online = Estado.paraSismografo("En Línea")
 
     # Estaciones de prueba
     estacion1 = EstacionSismologica(102, -34.6, -58.4, "Estación Central")
@@ -24,11 +27,11 @@ if __name__ == "__main__":
     estacion5 = EstacionSismologica(5000, -35.0, -58.8, "Estación Este")
 
     # Sismografos
-    sismografo1 = Sismografo(datetime(2025, 1, 1), 12345, 65, estado_pendiente, [], estacion1)
-    sismografo2 = Sismografo(datetime(2025, 1, 2), 67890, 24, estado_completa, [], estacion2)
-    sismografo3 = Sismografo(datetime(2025, 1, 3), 54321, 122, estado_pendiente, [], estacion3)
-    sismografo4 = Sismografo(datetime(2025, 1, 4), 98765, 6, estado_completa, [], estacion4)
-    sismografo5 = Sismografo(datetime(2025, 1, 5), 11223, 99, estado_pendiente, [], estacion5)
+    sismografo1 = Sismografo(datetime(2025, 1, 1), 12345, 65, estado_Online, [], estacion1)
+    sismografo2 = Sismografo(datetime(2025, 1, 2), 67890, 24, estado_FueraServicio, [], estacion2)
+    sismografo3 = Sismografo(datetime(2025, 1, 3), 54321, 122, estado_FueraServicio, [], estacion3)
+    sismografo4 = Sismografo(datetime(2025, 1, 4), 98765, 6, estado_Online, [], estacion4)
+    sismografo5 = Sismografo(datetime(2025, 1, 5), 11223, 99, estado_Online, [], estacion5)
 
     # Crea empleado predefinido
     empleado_logueado = Empleado(
@@ -38,6 +41,13 @@ if __name__ == "__main__":
         mail="juan.perez@email.com",
         rol="ResponsableInspección"
     )
+
+    # Tipos de motivos
+    motivo1 = MotivoTipo("Falla Técnica")
+    motivo2 = MotivoTipo("Daño en el Equipo")
+    motivo3 = MotivoTipo("Condiciones Ambientales")
+    motivo4 = MotivoTipo("Problemas de Conectividad")
+
     # Lista de órdenes de inspección para testeo
     ordenes_test = [
         OrdenInspeccion(

@@ -14,10 +14,10 @@ if __name__ == "__main__":
     from datetime import datetime
 
     # Instancias de Estado
-    estado_pendiente = Estado.paraOrdenInspeccion("Pendiente")
-    estado_completa = Estado.paraOrdenInspeccion("CompletamenteRealizada")
-    estado_FueraServicio = Estado.paraSismografo("Fuera de Servicio")
-    estado_Online = Estado.paraSismografo("En Línea")
+    estado_pendiente = Estado("OrdenInspección", "Pendiente")
+    estado_completa = Estado("OrdenInspección", "CompletamenteRealizada")
+    estado_FueraServicio = Estado("Sismografo", "Fuera de Servicio")
+    estado_Online = Estado("Sismografo", "Online")
 
     # Estaciones de prueba
     estacion1 = EstacionSismologica(102, -34.6, -58.4, "Estación Central")

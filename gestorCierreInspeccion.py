@@ -25,6 +25,7 @@ class GestorCierreInspeccion:
 
     def buscarRILogueado(self):
         responsable = self.usuario.getRLlogueado()
+        print("buenas")
         if responsable:
             return responsable
         else:

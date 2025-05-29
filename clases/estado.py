@@ -26,3 +26,6 @@ class Estado:
     
     def esFueraDeServicio(self):
         return self.nombreEstado == "FueraDeServicio"
+
+    def getNombreEstado(self):
+        return self.nombreEstado

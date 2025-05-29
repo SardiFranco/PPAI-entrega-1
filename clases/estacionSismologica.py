@@ -18,3 +18,13 @@ class EstacionSismologica:
             if sismografo.sosDeEstacionSismologica(self.nombre):
                 return sismografo.getIdSismografo()
     
+   # def ponerSismografoFueraServicio(self, nuevoEstado, idSismografo):
+    #    from clases.sismografo import Sismografo
+        
+     #   sismografo = Sismografo.listaSismografos()
+     #   for s in sismografo:
+    #      if s.getIdSismografo() == idSismografo:
+                
+    
+
+

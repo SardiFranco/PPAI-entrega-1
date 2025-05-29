@@ -11,13 +11,39 @@ if __name__ == "__main__":
     from clases.estacionSismologica import EstacionSismologica
     from pantallaCierreInspeccion import PantallaCierreInspeccion
     from gestorCierreInspeccion import GestorCierreInspeccion
+    from clases.cambioEstado import CambioEstado
     from datetime import datetime
+    from clases.rol import Rol
 
     # Instancias de Estado
     estado_pendiente = Estado("OrdenInspección", "Pendiente")
+    estado_pendiente = Estado("OrdenInspección", "Cerrada")
     estado_completa = Estado("OrdenInspección", "CompletamenteRealizada")
     estado_FueraServicio = Estado("Sismografo", "Fuera de Servicio")
     estado_Online = Estado("Sismografo", "Online")
+
+    responsable_inspeccion = Rol("Responsable de Inspección de Sismógrafos","ResponsableInspección")
+    responsable_reparacion = Rol("Responsable de Reparación de Sismógrafos","ResponsableReparación")
+
+    # Crea empleado predefinido
+    empleado_logueado = Empleado(
+        nombre="Juan",
+        apellido="Pérez",
+        telefono=123456789,
+        mail="juan.perez@email.com",
+        rol=responsable_inspeccion
+    )
+
+        
+
+    # Instancias Cambio de Estado
+    cambio_estado = CambioEstado(
+        fechaHoraInicio=datetime.now(),
+        fechaHoraFin=None,
+        estado=estado_Online,
+        motivoFueraServicio=None,
+        empleado=empleado_logueado
+    )
 
     # Estaciones de prueba
     estacion1 = EstacionSismologica(102, -34.6, -58.4, "Estación Central")
@@ -33,14 +59,8 @@ if __name__ == "__main__":
     sismografo4 = Sismografo(datetime(2025, 1, 4), 98765, 6, estado_Online, [], estacion4)
     sismografo5 = Sismografo(datetime(2025, 1, 5), 11223, 99, estado_Online, [], estacion5)
 
-    # Crea empleado predefinido
-    empleado_logueado = Empleado(
-        nombre="Juan",
-        apellido="Pérez",
-        telefono=123456789,
-        mail="juan.perez@email.com",
-        rol="ResponsableInspección"
-    )
+    sismografo2.cambiosEstado.append(cambio_estado)
+    
 
     # Tipos de motivos
     motivo1 = MotivoTipo("Falla Técnica")
@@ -63,7 +83,7 @@ if __name__ == "__main__":
                 apellido="Gómez",
                 telefono=987654321,
                 mail="ana.gomez@gmail.com",
-                rol="ResponsableInspección") 
+                rol=responsable_inspeccion) 
         ),
         OrdenInspeccion(
             nroOrden=2,
@@ -88,7 +108,7 @@ if __name__ == "__main__":
                 apellido="Gómez",
                 telefono=987654321,
                 mail="ana.gomez@gmail.com",
-                rol="ResponsableInspección") 
+                rol=responsable_inspeccion) 
         ),
         OrdenInspeccion(
             nroOrden=4,
@@ -111,6 +131,15 @@ if __name__ == "__main__":
             empleado=empleado_logueado
         ),
     ]
+
+    empleado = Empleado(
+        nombre="Pepe",
+        apellido="Perez",
+        telefono=123456789,
+        mail="juanp@gmail.com",
+        rol=responsable_reparacion
+        )
+
 
     # Crear un usuario predefinido asociado al empleado
     usuario_test = Usuario(

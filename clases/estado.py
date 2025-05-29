@@ -25,7 +25,7 @@ class Estado:
         return self.nombreEstado == "Cerrada"
     
     def esFueraDeServicio(self):
-        return self.nombreEstado == "FueraDeServicio"
+        return self.nombreEstado == "Fuera de Servicio"
 
     def getNombreEstado(self):
         return self.nombreEstado

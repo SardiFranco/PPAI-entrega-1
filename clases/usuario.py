@@ -6,5 +6,5 @@ class Usuario:
         self.contrasena = contrasena
         self.empleado = empleado
 
-    def getRLlogueado(self):
+    def getRIlogueado(self):
         return self.empleado 

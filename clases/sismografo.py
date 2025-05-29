@@ -23,8 +23,8 @@ class Sismografo:
         return cls.lista_Sismografos
 
     # Metodos de instancia
-    def crearCambioEstado(self):
-        newCambio = CambioEstado(datetime.now(), None, self.estado)
+    def crearCambioEstado(self, nuevoEstado, empleado):
+        newCambio = CambioEstado(datetime.now(), None, nuevoEstado, None, empleado)
         self.cambiosEstado.append(newCambio) 
         return newCambio
 
@@ -44,6 +44,7 @@ class Sismografo:
         if self.estacionSismologica.nombre ==  nombreEstacion:
             return self
     
-    def enviarAReparar(self):
+    def enviarAReparar(self, nuevoEstado, empleado):
         self.obtenerEstadoActual().setFechaHoraFin(datetime.now())
-        self.crearCambioEstado()
+        nuevoCambioEstado = self.crearCambioEstado(nuevoEstado, empleado)
+        self.cambiosEstado.append(nuevoCambioEstado)

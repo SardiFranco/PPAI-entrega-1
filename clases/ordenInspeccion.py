@@ -40,7 +40,7 @@ class OrdenInspeccion:
     
     def mostrarDatosDeOrden(self):
         return f"Nro Orden: {self.nroOrden}, ID Sismografo: {str(self.estacionSismologica.obtenerIdSismografo())}, " \
-            f"Estado: {self.estado.nombreEstado}, " \
+            f"Estado: {self.estado.getNombreEstado()}, " \
             f"Fecha Inicio: {self.fechaHoraInicio}, Fecha Finalización: {self.fechaHoraFinalizacion}, " \
             f"Fecha Cierre: {self.fechaHoraCierre}"
     
@@ -60,5 +60,5 @@ class OrdenInspeccion:
     def esDeEmpleado(self, empleado: Empleado):
         return self.empleado == empleado
     
-    def enviarSismografoParaReparacion(self, nuevoEstado, idSismografo):
-        self.estacionSismologica.ponerSismografoFueraServicio(nuevoEstado, idSismografo)
+    def enviarSismografoParaReparacion(self, nuevoEstado, idSismografo, empleado):
+        self.estacionSismologica.ponerSismografoFueraServicio(nuevoEstado, idSismografo, empleado)

@@ -14,17 +14,12 @@ class EstacionSismologica:
     
     def obtenerIdSismografo(self):
         from clases.sismografo import Sismografo
-        for sismografo in Sismografo.listaSismografos():
+        for sismografo in Sismografo.lista_Sismografos:
             if sismografo.sosDeEstacionSismologica(self.nombre):
                 return sismografo.getIdSismografo()
     
-   # def ponerSismografoFueraServicio(self, nuevoEstado, idSismografo):
-    #    from clases.sismografo import Sismografo
-        
-     #   sismografo = Sismografo.listaSismografos()
-     #   for s in sismografo:
-    #      if s.getIdSismografo() == idSismografo:
-                
-    
-
-
+    def ponerSismografoFueraServicio(self, nuevoEstado, idSismografo, empleado):
+        from clases.sismografo import Sismografo
+        for sismografo in Sismografo.lista_Sismografos:
+            if sismografo.getIdSismografo() == idSismografo:
+                sismografo.enviarAReparar(nuevoEstado, empleado)

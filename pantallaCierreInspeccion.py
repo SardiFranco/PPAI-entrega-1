@@ -42,18 +42,14 @@ class PantallaCierreInspeccion:
                                       icon='question')
         if respuesta:
             self.ventana.destroy()
-            self.__init__(self.gestor)
 
     def opcionCerrarOrdenInspeccion(self):
-        self.habilitarVentana()
-
-    def habilitarVentana(self):
         self.botonCerrarInspeccion.pack_forget()
         ordenes = self.gestor.opcionCerrarOrdenInspeccion()
         self.mostrarSeleccionOrden(ordenes)
         
     def mostrarSeleccionOrden(self, ordenes):
-        columnas = ("Nro Orden", "Fecha Finalización", "Estación", " Id. Sismografo")
+        columnas = ("Nro Orden", "Fecha Finalización", "Estación", "Id. Sismografo")
         self.listaOrdenes = ttk.Treeview(self.ventana, columns=columnas, show='headings', selectmode='browse')
         for col in columnas:
             self.listaOrdenes.heading(col, text=col)
@@ -85,7 +81,6 @@ class PantallaCierreInspeccion:
 
             self.botonSelecOrden.pack_forget()
             self.listaOrdenes.pack_forget()
-            print(f"Orden seleccionada: Nro Orden {nro_orden}, ID Sismógrafo {id_sismografo}")
             messagebox.showinfo("Orden Seleccionada", f"Has seleccionado la Orden Nro: {nro_orden}")
             self.pedirObservacion()
         else:
@@ -121,7 +116,6 @@ class PantallaCierreInspeccion:
         label_estado.pack(pady=10)
 
         self.estadoSismografo = tk.StringVar()
-        print(f"Estados disponibles: {self.estadoSismografo}")
         self.comboboxEstado = ttk.Combobox(self.frameEstado, textvariable=self.estadoSismografo, state="readonly")
         self.comboboxEstado['values'] = estadosSismografo
         try:
@@ -135,8 +129,6 @@ class PantallaCierreInspeccion:
     def tomarEstadoSismografo(self): 
         self.estadoSeleccionado = self.estadoSismografo.get()
         motivos = self.gestor.tomarEstadoSismografo(self.estadoSeleccionado)
-        
-        print(f"Estado del sismógrafo tomado: {self.estadoSeleccionado}")
         self.mostrarMotivosFueraDeServicioASelec(motivos=motivos)
         
     def mostrarMotivosFueraDeServicioASelec(self, event=None, motivos=None):
@@ -152,7 +144,6 @@ class PantallaCierreInspeccion:
             label_motivos = ttk.Label(self.listaMotivos, text="Seleccione uno o varios motivos por los que el sismógrafo está fuera de servicio:")
             label_motivos.pack(pady=5)
             for motivo in motivos:
-                print(f"Motivo: {motivo}")
                 var = tk.BooleanVar()
                 check = ttk.Checkbutton(self.listaMotivos, text=motivo, variable=var)
                 check.pack(anchor='w')
@@ -183,7 +174,22 @@ class PantallaCierreInspeccion:
         else:
             if getattr(self, 'listaMotivos', None) is not None and self.listaMotivos.winfo_exists():
                 self.listaMotivos.destroy()
+            self.solicitarConfirmacionCierre()
 
     def solicitarConfirmacionCierre(self):
-        self.botonConfirmacionCierreOrden = ttk.Button(self.listaMotivos, text="Confirmar Cierre de Orden", command=self.gestor.tomarConfirmacionCierreOrden)
-        self.botonConfirmacionCierreOrden.pack(pady=10)
+        boton_frame = ttk.Frame(self.ventana)
+        boton_frame.pack(pady=10)
+
+        self.botonConfirmacionCierreOrden = ttk.Button(boton_frame, text="Confirmar Cierre de Orden", command=self.tomarConfirmacionCierreOrden)
+        self.botonConfirmacionCierreOrden.pack()
+
+    def tomarConfirmacionCierreOrden(self):
+        seCerroCorrectamente = self.gestor.tomarConfirmacionCierreOrden()
+        self.finCU(seCerroCorrectamente)
+        
+    def finCU(self, seCerroCorrectamente):
+        if seCerroCorrectamente:
+            messagebox.showinfo("Cierre de Orden", "La orden de inspección se ha cerrado correctamente.")
+        else:
+            messagebox.showerror("Error", "No se pudo cerrar la orden de inspección. Inténtalo nuevamente.")
+        self.ventana.destroy()
